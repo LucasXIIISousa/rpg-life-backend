@@ -1,0 +1,16 @@
+# A linha 'version' foi removida por ser obsoleta
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: '11223344' 
+      POSTGRES_DB: rpg_database
+    ports:
+      - "5439:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+volumes:
+  db_data:
