@@ -2,11 +2,11 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  user: 'admin',          // Seu usuário do banco
-  password: '11223344',       // Sua senha do banco
-  host: 'localhost',          // O Docker expõe o banco no localhost
-  port: 5439,                 // A porta que você mapeou
-  database: 'rpg_database',   // O nome do seu banco de dados
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  database: process.env.DB_NAME,
 });
 
 module.exports = {

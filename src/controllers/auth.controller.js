@@ -4,8 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 // IMPORTANTE: Em um projeto real, esta chave deve vir de variáveis de ambiente!
-const SECRET_KEY = 'minha_chave_super_secreta_para_o_jwt';
-
+const SECRET_KEY = process.env.JWT_SECRET;
 // Função para registrar um usuário
 exports.register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -73,5 +72,23 @@ exports.login = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Erro interno do servidor ao tentar fazer login.' });
+  }
+};
+
+exports.getProfile = async (req, res) => {
+  try {
+    // O `req.user.userId` foi adicionado pelo nosso middleware!
+    const userId = req.user.userId;
+
+    const result = await pool.query('SELECT id, name, email FROM users WHERE id = $1', [userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
+    }
+
+    res.status(200).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro interno do servidor.' });
   }
 };
