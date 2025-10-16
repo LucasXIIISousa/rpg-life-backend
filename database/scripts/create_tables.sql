@@ -1,4 +1,20 @@
 -- backend/database/scripts/create_tables.sql
+
+-- =================================================================
+-- SEÇÃO DE LIMPEZA (DROP)
+-- Deleta as tabelas na ordem inversa de dependência se elas já existirem.
+-- O CASCADE cuida de remover as dependências automaticamente.
+-- =================================================================
+DROP TABLE IF EXISTS generated_items CASCADE;
+DROP TABLE IF EXISTS item_bases CASCADE;
+DROP TABLE IF EXISTS quests CASCADE;
+DROP TABLE IF EXISTS characters CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+
+-- =================================================================
+-- SEÇÃO DE CRIAÇÃO (CREATE)
+-- Cria a estrutura de tabelas do zero.
+-- =================================================================
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- Tabela de usuários
@@ -7,6 +23,7 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(255),
+  last_login TIMESTAMP, -- <-- Adicionado para a mecânica de inatividade
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -21,6 +38,7 @@ CREATE TABLE characters (
   max_xp INTEGER DEFAULT 1000,
   class VARCHAR(100) DEFAULT 'Life Adventurer',
   attributes JSONB NOT NULL,
+  appearance JSONB, -- <-- Adicionado para a customização
   equipped_items JSONB DEFAULT '{}',
   gear_score INTEGER DEFAULT 0,
   avatar TEXT,
