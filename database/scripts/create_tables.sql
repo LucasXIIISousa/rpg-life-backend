@@ -63,7 +63,12 @@ CREATE TABLE quests (
   time_limit VARCHAR(50),
   created_at TIMESTAMP DEFAULT NOW(),
   completed_at TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT NOW()
+  updated_at TIMESTAMP DEFAULT NOW(),
+  
+  -- CAMPOS NOVOS PARA RECORRÊNCIA E CONSISTÊNCIA --
+  recurrence_type VARCHAR(20) DEFAULT 'única', -- Ex: 'única', 'diária', 'semanal'
+  consistency_streak INTEGER DEFAULT 0,
+  last_completed_at TIMESTAMP
 );
 
 -- Tabela de bases de itens
